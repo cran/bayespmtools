@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Getting Started with bayespmtools</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting Started with bayespmtools</h1>
+
+
+
+<div id="what-is-bayespmtools" class="section level2">
+<h2>What is bayespmtools?</h2>
+<p>The <strong>bayespmtools</strong> package helps you determine sample
+sizes for external validation studies of risk prediction models using a
+Bayesian approach. Unlike traditional methods that require fixed
+performance values, this package allows you to incorporate uncertainty
+about model performance into your calculations.</p>
+</div>
+<div id="why-use-a-bayesian-approach" class="section level2">
+<h2>Why use a Bayesian approach?</h2>
+<p>Traditional sample size calculations require you to specify exact
+values for metrics like the c-statistic or calibration slope. But in
+reality, we’re uncertain about these values. The Bayesian approach in
+<strong>bayespmtools</strong> lets you:</p>
+<ul>
+<li>Express uncertainty about model performance using probability
+distributions</li>
+<li>Calculate sample sizes based on expected precision OR assurance
+levels</li>
+<li>Incorporate Value of Information (VoI) analysis to assess clinical
+utility</li>
+</ul>
+</div>
+<div id="quick-example" class="section level2">
+<h2>Quick Example</h2>
+<p>Let’s walk through a simple example. Suppose you’re planning to
+externally validate a risk prediction model and you have some prior
+information about its likely performance.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(bayespmtools)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># Set seed for reproducibility</span></span></code></pre></div>
+<div id="step-1-specify-your-evidence" class="section level3">
+<h3>Step 1: Specify Your Evidence</h3>
+<p>First, define what you know (or believe) about the model’s
+performance using probability distributions:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>evidence <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  prev <span class="sc">~</span> <span class="fu">beta</span>(<span class="dv">116</span>, <span class="dv">155</span>),           <span class="co"># Outcome prevalence</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  cstat <span class="sc">~</span> <span class="fu">beta</span>(<span class="dv">3628</span>, <span class="dv">1139</span>),        <span class="co"># C-statistic</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  cal_mean <span class="sc">~</span> <span class="fu">norm</span>(<span class="sc">-</span><span class="fl">0.009</span>, <span class="fl">0.125</span>),  <span class="co"># Mean calibration error</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  cal_slp <span class="sc">~</span> <span class="fu">norm</span>(<span class="fl">0.995</span>, <span class="fl">0.024</span>)     <span class="co"># Calibration slope</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>)</span></code></pre></div>
+<p><strong>What this means:</strong></p>
+<ul>
+<li><code>prev</code>: Outcome prevalence</li>
+<li><code>cstat</code>: c-statistic (discrimination)</li>
+<li><code>cal_mean</code>: Mean calibration error (differences between
+average observed and expected risks)</li>
+<li><code>cal_slp</code>: Expected calibration slope (from a logistic
+model regressing observed outcome on logit-transformed predicted
+risks)</li>
+</ul>
+<p>You can parameterize distributions flexibly using means and SDs,
+confidence interval bounds, or natural parameters.</p>
+</div>
+<div id="step-2-define-your-targets" class="section level3">
+<h3>Step 2: Define Your Targets</h3>
+<p>Next, specify what precision you want to achieve. We want to evaluate
+sample size size on three rules:</p>
+<ul>
+<li>Targeting expected 95% CI width for c-statistic,
+observed-to-expected outcome ratio (cal_oe), and calibration slope
+(cal_slp).</li>
+<li>Targeting 90% assurance on calibration slope. In particular, we want
+to be 90% confident that the calibration slope’s CI width will be no
+greater a maximum tolerable value.</li>
+<li>Using Value of Information (voI) criterion for net benefit: we want
+this validation study to reduce net benefit loss due to uncertainty by
+90%.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>targets <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">eciw.cstat =</span> <span class="fl">0.1</span>,             <span class="co"># Expected CI width for c-statistic</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">eciw.cal_oe =</span> <span class="fl">0.22</span>,           <span class="co"># Expected CI width for O/E ratio</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">eciw.cal_slp =</span> <span class="fl">0.30</span>,          <span class="co"># Expected CI width for calibration slope</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">qciw.cal_slp =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.35</span>),  <span class="co"># 90% assurance that CI width ≤ 0.35</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">voi.nb =</span> <span class="fl">0.90</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="step-3-calculate-sample-size" class="section level3">
+<h3>Step 3: Calculate Sample Size</h3>
+<p>Now run the main calculation:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">bpm_valsamp</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">evidence =</span> evidence,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">targets =</span> targets,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">n_sim =</span> <span class="dv">1000</span>,           <span class="co"># Number of Monte Carlo simulations</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">threshold =</span> <span class="fl">0.2</span>         <span class="co"># Risk threshold for net benefit calculations</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>)</span></code></pre></div>
+<p>NOTE: the number of simulations (n_sim) of 1,000 is low and is used
+here for convenience. In practice, consider simulation sizes of at least
+10,000 and consider stability of results using different random
+seed.</p>
+</div>
+<div id="step-4-view-results" class="section level3">
+<h3>Step 4: View Results</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">print</span>(results<span class="sc">$</span>results)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt;   eciw.cstat  eciw.cal_oe eciw.cal_slp qciw.cal_slp       voi.nb </span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt;          347          430         1037          896          717</span></span></code></pre></div>
+<p>The output shows the required sample size for each criterion. The
+largest sample size (1037) ensures all targets are met. However, the VoI
+criterion indicates that a sample size of 717 is expected to reduce
+uncertainty-related clinical utility loss by 90%. This might be used to
+reason that the criteria on calibration slope can potentially be
+relaxed.</p>
+</div>
+</div>
+<div id="next-steps" class="section level2">
+<h2>Next Steps</h2>
+<p>For more advanced usage, see the full tutorial vignette:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&quot;bayespmtools_tutorial&quot;</span>)</span></code></pre></div>
+<p>This covers: - Working with different distribution types - Net
+benefit and Value of Information analysis - Precision calculations for
+fixed sample sizes - A real-world case study</p>
+</div>
+<div id="key-functions" class="section level2">
+<h2>Key Functions</h2>
+<ul>
+<li><code>bpm_valsamp()</code>: Calculate required sample size given
+targets</li>
+<li><code>bpm_valprec()</code>: Calculate precision/VoI given a fixed
+sample size</li>
+</ul>
+</div>
+<div id="getting-help" class="section level2">
+<h2>Getting Help</h2>
+<p>For detailed documentation on any function:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>?bpm_valsamp</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>?bpm_valprec</span></code></pre></div>
+<p>Visit the package repository: <a href="https://github.com/resplab/bayespmtools" class="uri">https://github.com/resplab/bayespmtools</a></p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>For methodological details, see:</p>
+<p>Sadatsafavi M, et al. (2025). Bayesian sample size considerations for
+external validation of risk prediction models. <em>Statistics in
+Medicine</em>. <a href="doi:10.1002/sim.70389" class="uri">doi:10.1002/sim.70389</a> ```</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
