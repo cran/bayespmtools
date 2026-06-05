@@ -4,7 +4,7 @@
 \alias{find_n_mean}
 \title{Calculates Sample Size Given Target Mean CI}
 \usage{
-find_n_mean(target, N, ciws, decreasing = TRUE, convex = TRUE)
+find_n_mean(target, N, ciws, decreasing = T, convex = T)
 }
 \arguments{
 \item{target}{The target mean confidence interval width}

@@ -19,6 +19,12 @@ evidence <- list(
     cal_slp~norm(0.995, 0.024)     #mean and SD
   )
 
+## ----inspect-evidence---------------------------------------------------------
+process_evidence(evidence)
+
+## ----summarise-evidence-------------------------------------------------------
+summary(process_evidence(evidence))
+
 ## ----targets-samp-------------------------------------------------------------
 targets_samp <- list(eciw.cstat=0.1,
                 eciw.cal_oe=0.22,
